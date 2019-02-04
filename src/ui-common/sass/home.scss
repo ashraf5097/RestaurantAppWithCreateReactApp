@@ -1,0 +1,196 @@
+.carousel-inner{
+min-height : 80px;
+max-height : 100px;
+width : 100%;
+};
+
+.bg-color{
+background-color: lightblue;
+}
+
+.box{
+    display: inline-block;
+    margin: 10px;
+    border: 1px solid black;
+    width : 500px;
+    padding: 20px;
+    background-color: lemonchiffon;
+    border-radius: 4px !important;
+}
+
+.bottom{
+    background-color: skyblue;
+}
+
+.box:hover{
+    box-shadow: 0 2px 2px black;
+    font-style: bold;
+    font-weight: 600;
+    border-radius: 4px !important;
+}
+
+.hover-on-row:hover{
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+.menubar{
+    padding-right: .5rem;
+    padding-left: .5rem;
+    display: block;
+    padding: .5rem 1rem;
+    color: white;
+}
+
+.menubar:hover{
+    color: green !important;
+}
+
+.menubar:active{
+    font-weight: bolder !important;
+    color: ghostwhite !important;
+}
+
+.toolbar{
+    height: 56px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #703B09;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+    z-index: 90;
+}
+
+.login{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    height: 100%;
+}
+
+.add-in-container-fluid{
+    padding-top: 4% !important;
+    margin-left: 15px !important;
+}
+
+.form-control{
+width : 100% !important;
+background-color: ghostwhite;
+border-color: darkgrey;
+}
+
+.textbox{
+    padding-bottom: 1%;
+    padding-left: 5%;
+    cursor: pointer;
+}
+
+.button-space{
+    padding-top: 3%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-primary{
+    // width: 9% !important;
+}
+.spanStyleButton{
+    padding-left: 3%
+}
+
+.submit-btn-in-AddRest{
+    display: flex;
+    justify-content: space-around;
+    padding-top: 3%;
+}
+
+.checkBox {
+    cursor: pointer;
+    display: block;
+    width: 24%;
+    height: 73%;
+    border: 1px solid #a9abb2;
+    background-color: transparent;
+    transition: border .3s;
+}
+
+.decorate-checkbox{
+    position: relative;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+
+.float-checkbox{
+    padding-top: 3%;
+}
+
+.checkbox-label{
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+    -ms-flex-direction: row-reverse;
+    flex-direction: row-reverse;
+}
+
+.display-flex{
+    display: flex;
+}
+
+._2m7ny {
+    height: 16px;
+    width: 16px;
+    transition: transform .3s cubic-bezier(.23,1,.32,1) 0ms;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 1;
+    fill: #60b246;
+    -ms-transform: scale(0);
+    transform: scale(0);
+}
+
+._1GLei {
+    fill: #fc8019;
+}
+._1WnJw{
+    display: none;
+}
+
+.cursor-css{
+    cursor: pointer;
+}
+
+.filter-box{
+    display: inline-block;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    width: 100%;
+    padding-left: 7%;
+    padding-bottom: 4%;
+    padding-top: 4%;
+}
+
+.list-background-color{
+    background-color: darkslategrey;
+    border-radius: 4px;
+}
+
+#custom-search-input{
+    padding-top: 1%;
+    padding-bottom: 2%;
+    margin-left: 9%;
+}
+
+.whole-page-background-color{
+    background-color: beige;
+}

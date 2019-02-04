@@ -10,7 +10,8 @@ import { Provider } from "react-redux";
 
 
 // Import bootstrap css
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
+require('../src/ui-common/sass/home.scss');
 
 
 ReactDOM.render(
