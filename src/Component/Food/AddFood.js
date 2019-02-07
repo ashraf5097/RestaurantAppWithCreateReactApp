@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import TextBox from '../Common/TextBox';
 import Button from '../Common/Button';
-import { throws } from 'assert';
 import axios from 'axios';
 import FoodDisplayBox from '../Food/FoodDisplayBox';
 import HotelDisplayBox from '../Restaurant/HotelDisplayBox';

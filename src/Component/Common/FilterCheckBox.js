@@ -17,10 +17,16 @@ class FilterCheckBox extends Component {
         this.props && this.props.onChange(name);
     }
 
+    handleDiv (name) {
+        console.log("name  = ",name);
+        
+        // this.props && this.props.onChange(name);
+    }
+
     render () {
         let option = this.props.filterdata
         return (
-            <div className="">
+            <div className="" onClick={()=>this.handleDiv(option)}>
                 <div class="custom-control custom-checkbox ">
                     <input type="checkbox" className="custom-control-input" id={option} onChange={()=>this.handleChange(option)} />
                     <label className="custom-control-label cursor-css" for={option}>{this.props.filterdata}</label>

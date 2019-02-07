@@ -1,0 +1,10 @@
+.filter-button-disable{
+    pointer-events: none !important;
+}
+
+.filter-button-active{
+    cursor: pointer;
+    color: #fff;
+    background-color: #117a8b;
+    border-color: #10707f;
+}

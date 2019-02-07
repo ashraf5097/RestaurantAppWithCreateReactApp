@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import TextBox from '../Common/TextBox';
 import Button from '../Common/Button';
-import { throws } from 'assert';
 import HotelDisplayBox from '../Restaurant/HotelDisplayBox';
 import axios from 'axios';
 
@@ -82,8 +81,7 @@ class AddRestaurant extends Component {
 
     handleOnSubmit () {
         const {restaurantList} = this.state;
-        console.log("restaurantList = ", restaurantList);
-        
+
         axios.post('http://localhost:8080/addHotel', restaurantList, {mode: 'no-cors'})
             .then(function (response) {
                 console.log(response);
@@ -91,11 +89,6 @@ class AddRestaurant extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        // axios.post('http://localhost:8080/addHotel', {restaurantList}, { mode: 'no-cors'})
-        //     .then(fetchedData => {
-        //         let hotelData = fetchedData.data;
-        //         console.log("hotel date = ", hotelData);
-        //     });
     }
 
     hotelDisplay (hotelData, index) {

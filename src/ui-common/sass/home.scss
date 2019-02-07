@@ -57,7 +57,7 @@ background-color: lightblue;
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #703B09;
+    background-color: cadetblue;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -78,7 +78,6 @@ background-color: lightblue;
 
 .add-in-container-fluid{
     padding-top: 4% !important;
-    margin-left: 15px !important;
 }
 
 .form-control{
@@ -142,7 +141,8 @@ border-color: darkgrey;
     flex-direction: row-reverse;
 }
 
-.display-flex{
+.dropdown-display-flex{
+    margin-bottom: 0% !important;
     display: flex;
 }
 
@@ -192,5 +192,5 @@ border-color: darkgrey;
 }
 
 .whole-page-background-color{
-    background-color: beige;
+    // background-color: beige;
 }

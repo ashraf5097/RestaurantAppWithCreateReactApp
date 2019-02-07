@@ -72,7 +72,7 @@ class MenuBar extends Component {
                                         fontWeight: "bold",
                                         color: "black",
                                     }}
-                                    exact to={'/home'} >Home</NavLink>
+                                    exact to={'/'} >Login</NavLink>
                             </li>
                         </ul>
                     </div>

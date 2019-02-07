@@ -14,6 +14,7 @@ class FilterMenu extends Component {
             locationFilter: false,
             selectedLocation: [],
             message: undefined,
+            enableFilter: false
         };
     }
 
@@ -28,6 +29,7 @@ class FilterMenu extends Component {
         }
         this.setState({
             selectedLocation: oldLocation,
+            enableFilter: true,
         });
     }
 
@@ -36,7 +38,8 @@ class FilterMenu extends Component {
     }
 
     render () {
-        let {locationFilter , uniqueLocationArray} = this.props;
+        let {locationFilter , uniqueLocationArray,} = this.props;
+        let {enableFilter} = this.state;
         return (
             <div>
                 <div className={locationFilter ? "filter-box" : ""}>
@@ -52,13 +55,16 @@ class FilterMenu extends Component {
                         })
                     }
                 </div>
+                <div className="filter-button">
                 <Button
                     text="Filter"
                     id="filter"
                     type="button"
-                    class="btn btn-secondary"
+                    class={enableFilter ?"filter-button-active btn btn-info":"btn btn-secondary filter-button-disable"}
                     handleOnClick = {(name)=>this.handleSubmit(name)}
                 />
+                </div>
+                
             </div>
         );
     }

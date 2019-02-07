@@ -3,7 +3,7 @@ import React from 'react';
 const Bottom = () => {
     return (
 
-        <footer className="section footer-classic context-dark bg-image background">
+        <footer className="section footer-classic context-dark bg-image background footer-background-color">
             <div className="container">
                 <div className="row row-30">
                     <div className="col-md-4 col-xl-5">

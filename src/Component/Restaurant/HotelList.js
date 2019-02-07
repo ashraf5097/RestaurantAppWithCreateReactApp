@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {connect} from "react-redux";
-import Bottom from '../Bottom';
 import axios from 'axios';
 // import hotelData from '../newHotelDataConstant';
 import HotelDisplayBox from './HotelDisplayBox';
@@ -16,10 +14,6 @@ class HotelList extends Component {
     constructor () {
         super();
         this.state = {
-            articles: [
-                { title: "React Redux Tut", id: 1 },
-                { title: "Redux e React: ", id: 2 },
-            ],
             locationFilter: false,
             data: true,
             message: undefined,
@@ -73,6 +67,10 @@ class HotelList extends Component {
         this.setState({
             locationFilter: !locationFilter,
         });
+    }
+
+    handleTypeFilter () {
+        console.log("Filter with type");
     }
 
     handleChange (name) {
@@ -137,7 +135,7 @@ class HotelList extends Component {
     }
 
     render () {
-        const { articles, message, hotelDataFromApi } = this.state;
+        const { message, hotelDataFromApi } = this.state;
         let restaurantLength = 0;
 
         if (message) {
@@ -162,10 +160,19 @@ class HotelList extends Component {
                     <div className="col-md-2">
                         <aside>
                             Filter based on:
-                            <label className="display-flex cursor-css" onClick={()=>this.handleLocationFilter()} >
+                            < label className = "dropdown-display-flex cursor-css"
+                            onClick = {
+                                () => this.handleLocationFilter()
+                            } >
                             location
                             </label>
                             {hotelDataFromApi && this.filterCheckBox(hotelDataFromApi)}
+                            < label className = "dropdown-display-flex cursor-css"
+                            onClick = {
+                                () => this.handleTypeFilter()
+                            } >
+                            type
+                            </label>
                         </aside>
                     </div>
                 </div>

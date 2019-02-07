@@ -2,10 +2,11 @@
 // Import react
 import React from 'react';
 import MenuBar from './Component/MenuBar';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import HotelList from '../src/Component/Restaurant/HotelList';
 import AddRestaurant from './Component/Restaurant/AddRestaurant';
 import Home from './Component/Home';
+import Login from './Component/Common/Login';
 import FoodInRest from './Component/Food/FoodInRest';
 import AddFood from '../src/Component/Food/AddFood';
 import Footer from '../src/Component/Bottom';
@@ -17,11 +18,33 @@ class App extends React.Component {
         return (
             <div className="whole-page-background-color">
                 <MenuBar />
+                <div className="confetti">
+  <div className="confetti-piece" style={{zIndex: 2 }}>ashraf</div>
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  <div className="confetti-piece"></div>
+  
+  <div className="confetti-piece"></div>
                 <Route path="/home" component={Home} />
+                <Route exact path="/" component={Login} />
+                <Route path="/login" component={Login} />
                 <Route path="/hotel" component={HotelList} />
                 <Route path="/foodInRest" component={FoodInRest} />
                 <Route path="/addFood" component={AddFood} />
                 <Route path="/addRestaurant" component={AddRestaurant} />
+                </div>
+
                 <Footer />
                 {/* <Route path="/contact" component={contact} /> */}
             </div>
