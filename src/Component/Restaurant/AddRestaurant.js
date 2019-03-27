@@ -1,8 +1,26 @@
 import React, {Component} from 'react';
 import TextBox from '../Common/TextBox';
+import {connect} from 'react-redux';
+import NumberTextBox from '../Common/NumberTextBox';
 import Button from '../Common/Button';
 import HotelDisplayBox from '../Restaurant/HotelDisplayBox';
 import axios from 'axios';
+import {imageConstantFile} from '../../ui-common/imageConstantFile';
+import * as actions from '../../store/action/actionCreator';
+
+
+const mapStateToProps = state =>{
+    return {
+        isSaved: state.isSaved,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+   return{
+    addRestaurantList : (restaurantList) => dispatch(actions.addRestaurantList(restaurantList)),
+    resetIsSaved : (isSavedValue) => dispatch(actions.savedSuccessFully(isSavedValue))
+   }
+}
 
 class AddRestaurant extends Component {
     constructor (props) {
@@ -13,22 +31,55 @@ class AddRestaurant extends Component {
             restContact: '',
             restaurantList: [],
             index: -1,
+            fileName:'',
+            files:'',
+            isSaved: false
         };
         this.handleChange = this.handleChange.bind(this);
     }
 
+    static getDerivedStateFromProps(nextProps, prevState){
+        if (nextProps.isSaved !== prevState.isSaved) {
+            return { isSaved : nextProps.isSaved}
+        } else return null;
+    }
+    
+    componentDidUpdate(prevProps, prevState) {
+        if (prevState.isSaved !== this.state.isSaved) {
+                this.handleOnclear();
+                this.setState({
+                    restaurantList: [],
+                    isSaved: false
+                });
+                this.props.resetIsSaved(false);
+        }
+    }
+
+    handleOnSubmit () {
+        const {restaurantList} = this.state;
+        if (restaurantList.length) {
+            this.props.addRestaurantList(restaurantList)
+        }
+    }
+
     handleChange (event) {
         if (event.target.id === 'usr') {
-            this.setState({
-                restName: event.target.value,
-            });
+            this.setState({restName: event.target.value});
         }
         if (event.target.id === 'loc') {
-            this.setState({
-                restLocation: event.target.value,
-            });
+            this.setState({restLocation: event.target.value});
         }
-        if (event.target.id === 'con') {
+        if (event.target.id === 'con') { this.setStateForContactNumber(event); }
+    }
+
+    setStateForContactNumber(event) {
+        let { restContact } = this.state;
+        let eventTargetValue = event.target.value;
+        let regex = /^[0-9\s]*$/;
+        let isValid  = regex.test(eventTargetValue);
+
+        if(isValid ) {
+            if (restContact.length < 10 || ( eventTargetValue.length < restContact.length))
             this.setState({
                 restContact: event.target.value,
             });
@@ -53,6 +104,7 @@ class AddRestaurant extends Component {
                 index: -1,
             });
         }
+        this.handleOnclear();
     }
 
     handleOnclear () {
@@ -79,17 +131,6 @@ class AddRestaurant extends Component {
         });
     }
 
-    handleOnSubmit () {
-        const {restaurantList} = this.state;
-
-        axios.post('http://localhost:8080/addHotel', restaurantList, {mode: 'no-cors'})
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
 
     hotelDisplay (hotelData, index) {
         return (
@@ -97,7 +138,11 @@ class AddRestaurant extends Component {
                 <HotelDisplayBox
                     hotel={hotelData}
                     index={index}
-                    onClick={()=>this.hotelClicked(index, hotelData.id)}
+                    ImageFileConstant={imageConstantFile}
+                    ImageWidthHeight='image-widht-height-for-addRestaurant'
+                    box='box-for-addRestaurant'
+                    hover= {false}
+                    // onClick={()=>this.hotelClicked(index, hotelData.id)}
                 />
                 <Button
                     text="Delete"
@@ -120,7 +165,27 @@ class AddRestaurant extends Component {
         );
     }
 
+//     handleUploadImage = (event) => {
+//         let files = event.target.files[0];
+//             const formData = new FormData()
+
+//         //     files[0].forEach((file, i) => {
+//         //         formData.append(i, file)
+//         //       })
+
+
+//         // if(files.length){
+//         //     let filename = files[0].name;
+            
+//         //     this.setState({
+//         //         fileName : filename,
+//         //         files
+//         //     });
+//         // }
+//     }
+
     render () {
+        
         const {restaurantList} = this.state;
         return (
             <div className="form-group container-fluid add-in-container-fluid">
@@ -135,8 +200,6 @@ class AddRestaurant extends Component {
                                 value={this.state.restName}
                                 handleChange={this.handleChange}
                             />
-                        {/* </div>
-                        <div > */}
                             <TextBox
                                 label="Location"
                                 type="text"
@@ -147,14 +210,23 @@ class AddRestaurant extends Component {
                             />
                         </div>
                         <div >
-                            <TextBox
+                            <NumberTextBox
                                 label="Contact"
-                                type="number"
+                                type="text"
                                 id="con"
                                 name="contact"
                                 value={this.state.restContact}
                                 handleChange={this.handleChange}
                             />
+                        </div>
+                        <div>
+                             <label className="label-for-upload">Upload</label>
+                            <div>
+                                <span className= "control-fileupload">
+                                    <label for="fileInput" className = "text-inside-uploadBox">Select an image</label>
+                                    <input type="file" id="fileInput" onChange={this.handleUploadImage} />
+                                </span>
+                            </div>
                         </div>
                         <div className="button-space">
                             <Button
@@ -198,4 +270,4 @@ class AddRestaurant extends Component {
     }
 }
 
-export default AddRestaurant;
+export default connect(mapStateToProps, mapDispatchToProps)(AddRestaurant);

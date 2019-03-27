@@ -13,29 +13,13 @@ import Footer from '../src/Component/Bottom';
 // import { hot } from "react-hot-loader";
 
 class App extends React.Component {
-
     render () {
+        
         return (
             <div className="whole-page-background-color">
-                <MenuBar />
-                <div className="confetti">
-  <div className="confetti-piece" style={{zIndex: 2 }}>ashraf</div>
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  <div className="confetti-piece"></div>
-  
-  <div className="confetti-piece"></div>
+                {/* <MenuBar /> */}
+                {/* <Switch> */}
+                <Route path="/" component={MenuBar} />
                 <Route path="/home" component={Home} />
                 <Route exact path="/" component={Login} />
                 <Route path="/login" component={Login} />
@@ -43,10 +27,8 @@ class App extends React.Component {
                 <Route path="/foodInRest" component={FoodInRest} />
                 <Route path="/addFood" component={AddFood} />
                 <Route path="/addRestaurant" component={AddRestaurant} />
-                </div>
-
+                {/* </Switch> */}
                 <Footer />
-                {/* <Route path="/contact" component={contact} /> */}
             </div>
         );
     }

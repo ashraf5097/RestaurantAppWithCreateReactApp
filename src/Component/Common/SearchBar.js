@@ -5,10 +5,7 @@ const SearchBar = (props) => {
         <div id="custom-search-input">
             <div className = "row row-search-bar" >
                 <div className = "col-md-7">
-                    <input type="text" className="form-control input-lg" placeholder="Search by Location ,Name"
-                        onChange={(event)=>props.onType(event)}
-                        // onChange={props.onType(event)}
-                    />
+                    <input type="text" className="form-control input-lg" placeholder="Search by Location ,Name" onChange={(event)=>props.onType(event)} />
                 </div>
                 <div className = "col-md-5">
                     <button type="button" className="btn btn-info" onClick={props.onClick}>

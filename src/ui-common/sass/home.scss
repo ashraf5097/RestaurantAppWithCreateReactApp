@@ -11,10 +11,20 @@ background-color: lightblue;
 .box{
     display: inline-block;
     margin: 10px;
-    border: 1px solid black;
-    width : 500px;
-    padding: 20px;
-    background-color: lemonchiffon;
+    // border: 1px solid black;
+    width: 264px;
+    // padding: 20px;
+    // height: 330px;
+    // background-color: lemonchiffon;
+    border-radius: 4px !important;
+}
+
+.box-for-addRestaurant{
+    display: inline-block;
+    margin: 10px;
+    // border: 1px solid black;
+    width: 520px;
+    // height: 145px;
     border-radius: 4px !important;
 }
 
@@ -23,7 +33,8 @@ background-color: lightblue;
 }
 
 .box:hover{
-    box-shadow: 0 2px 2px black;
+    // box-shadow: 0 2px 2px black;
+    border-color: transparent !important;
     font-style: bold;
     font-weight: 600;
     border-radius: 4px !important;
@@ -73,7 +84,6 @@ background-color: lightblue;
     display: flex;
     flex-flow: column;
     align-items: center;
-    height: 100%;
 }
 
 .add-in-container-fluid{
@@ -174,7 +184,7 @@ border-color: darkgrey;
     display: inline-block;
     border: 1px solid #eee;
     box-shadow: 0 2px 2px #ccc;
-    width: 100%;
+    width: 78%;
     padding-left: 7%;
     padding-bottom: 4%;
     padding-top: 4%;
@@ -194,3 +204,84 @@ border-color: darkgrey;
 .whole-page-background-color{
     // background-color: beige;
 }
+
+//*Uplaod file**//
+.control-fileupload {
+	display: inline-block;
+	border: 1px solid #d6d7d6;
+	background: #FFF;
+	border-radius: 4px;
+	width: 15%;
+    height: 36px;
+    margin-top: 7px;
+	line-height: 36px;
+	padding: 0px 10px 2px 10px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .text-inside-uploadBox {
+    line-height: 30px;
+    color: #999999;
+    font-size: 14px;
+    font-weight: normal;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    position: relative;
+    z-index: 1;
+    margin-right: 12px;
+    margin-left: 12%;
+  }
+
+  .title{
+    font-weight: bold;
+    /* font-size: 100%; */
+    font-size: x-large;
+    color: red;
+  }
+
+  .location{
+      font-weight: bold;
+  }
+
+  .contact{
+      color: grey;
+  }
+
+  .image-widht-height {
+    height: 214px;
+    width: 262px;
+  }
+
+  .image-widht-height-for-addRestaurant {
+    height: 143px;
+    width: 262px;
+  }
+
+  .vegColor{
+    color: green
+  }
+
+  .nonVegColor{
+    color: Red
+  }
+
+  .downArrow{
+    display: inline-block;
+    cursor: pointer;
+    margin-bottom: 2%;
+    margin-left: 42%;
+    width: 6px;
+    height: 11px;
+    -webkit-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+  }
+
+  .arrow{
+      display: inline
+  }
+
+  .floatRight{
+      float: right;
+  }

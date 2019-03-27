@@ -7,10 +7,6 @@ class FilterMenu extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            articles: [
-                { title: "React Redux Tut", id: 1 },
-                { title: "Redux e React: ", id: 2 },
-            ],
             locationFilter: false,
             selectedLocation: [],
             message: undefined,
@@ -19,52 +15,41 @@ class FilterMenu extends Component {
     }
 
     handleCheckBoxOption (name) {
-
         let oldLocation = [ ...this.state.selectedLocation ];
-
-        if (oldLocation.indexOf(name) > -1) {
-            oldLocation.splice(oldLocation.indexOf(name), 1);
-        } else {
-            oldLocation.push(name);
-        }
+        oldLocation.indexOf(name) > -1 ? oldLocation.splice(oldLocation.indexOf(name), 1):oldLocation.push(name);
         this.setState({
             selectedLocation: oldLocation,
             enableFilter: true,
         });
     }
 
-    handleSubmit (name) {
-        this.props && this.props.onSubmit(this.state.selectedLocation);
+    displayFilterCheckBox = (location, index) => {
+        return (
+            <FilterCheckBox
+                key={index}
+                filterdata = {location}
+                onChange = {(name)=>this.handleCheckBoxOption(name)}
+            />
+        );
     }
 
     render () {
+
         let {locationFilter , uniqueLocationArray,} = this.props;
-        let {enableFilter} = this.state;
         return (
-            <div>
-                <div className={locationFilter ? "filter-box" : ""}>
-                    {
-                        locationFilter && uniqueLocationArray && uniqueLocationArray.map((location, index)  =>{
-                            return (
-                                <FilterCheckBox
-                                    key={index}
-                                    filterdata = {location}
-                                    onChange = {(name)=>this.handleCheckBoxOption(name)}
-                                />
-                            );
-                        })
-                    }
+            <div >
+                <div style={{backgroundColor:'whitesmoke'}}className={locationFilter ? "filter-box" : ""}>
+                    {locationFilter && uniqueLocationArray && uniqueLocationArray.map((location, index)  => this.displayFilterCheckBox(location, index))}
                 </div>
                 <div className="filter-button">
-                <Button
-                    text="Filter"
-                    id="filter"
-                    type="button"
-                    class={enableFilter ?"filter-button-active btn btn-info":"btn btn-secondary filter-button-disable"}
-                    handleOnClick = {(name)=>this.handleSubmit(name)}
-                />
+                   { locationFilter && (<Button
+                        text="Filter"
+                        id="filter"
+                        type="button"
+                        class={this.state.enableFilter ?"filter-button-active btn btn-info":"btn btn-secondary filter-button-disable"}
+                        handleOnClick = {()=>this.props.onSubmit(this.state.selectedLocation)}
+                    />)}
                 </div>
-                
             </div>
         );
     }

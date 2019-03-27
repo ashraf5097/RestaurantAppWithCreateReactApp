@@ -1,17 +1,17 @@
 import React from 'react';
-import mainLogo from '../../ui-common/images/download.png';
+const HotelDisplayBox = ({index,onClick, hotel, ImageFileConstant, box, ImageWidthHeight, hover}) => {
 
-const HotelDisplayBox = (props) => {
     return (
-        <ul className='box' onClick={props.onClick}>
-            <div className="row hover-on-row">
-                <div className="col-md-4">
-                    <img  src={mainLogo}  alt="fireSpot"/>
+        <ul className={box} onClick={onClick}>
+            <div className={hover ? 'row hover-on-row' : 'row'}>
+                <div className={hover ? 'col-md-12':'col-md-6' }>
+                    {/* <img  src={mainLogo}  alt="fireSpot"/> */}
+                <img className={ImageWidthHeight} src={ImageFileConstant[index]} alt="" />
                 </div>
-                <div className="col-md-8">
-                    <li>{props.hotel.name}</li>
-                    <li>{props.hotel.location}</li>
-                    <li>{props.hotel.contact}</li>
+                <div className={hover ? 'col-md-12':'col-md-6'} style={{left:'1%'}}>
+                    <li className="title">{hotel.name}</li>
+                    <li className="location">{hotel.location}</li>
+                    <li className="contact">{hotel.contact}</li>
                 </div>
             </div>
         </ul>

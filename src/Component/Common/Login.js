@@ -41,6 +41,12 @@ class Login extends Component {
             // );
             this.props.history.push({
                 pathname: '/home',
+                state:'admin'
+            });
+        } else {
+            this.props.history.push({
+                pathname: '/home',
+                state: 'user'
             });
         }
     }
@@ -48,6 +54,7 @@ class Login extends Component {
   render() {
       
     return (
+      
         <div className="wrapper ">
             <div id="formContent">
 

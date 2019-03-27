@@ -1,185 +1,129 @@
 import React, {Component} from 'react';
+// import Switch from "react-switch";
+
+import {connect} from 'react-redux';
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
-import axios from 'axios';
-// import hotelData from '../newHotelDataConstant';
 import HotelDisplayBox from './HotelDisplayBox';
-import FilterCheckBox from '../Common/FilterCheckBox';
 import SearchBar from '../Common/SearchBar';
 import FilterMenu from '../Common/FilterMenu';
+import * as actions from '../../store/action/actionCreator';
+// import Switch from '../Common/ToggleSwitch';
+import {imageConstantFile} from '../../ui-common/imageConstantFile';
+import downArrow from '../../ui-common/images/down-arrow.svg'
 let searchText;
+
+
+const mapStateToProps = state =>{
+    return {
+        hotelList: state.hotelList,
+        hotelLocation: state.hotelLocation,
+        allHotelList: state.allHotelList,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+   return{
+       getHotelList: () => dispatch(actions.fetchHotelList()),
+       getSearchHotelList: (searchText) => dispatch(actions.fetchSearchHotelList(searchText)),
+       getFilterHotelList: (searchText) => dispatch(actions.fetchedHotelSearched(searchText)),
+       getHotelLocation: () => dispatch(actions.fetchHotelLoction())
+   }
+}
 
 class HotelList extends Component {
 
-    constructor () {
-        super();
-        this.state = {
-            locationFilter: false,
-            data: true,
-            message: undefined,
-            hotelDataFromApi: undefined,
-            searchText: '',
-            newWaala: undefined,
-        };
-    }
+    state = { locationFilter: false};
 
     componentDidMount () {
-        axios.get('http://localhost:8080/displayHotelList', { mode: 'no-cors'})
-            .then(fetchedData => {
-                let hotelData = fetchedData.data;
-                this.setState({
-                    message: hotelData,
-                    hotelDataFromApi: hotelData,
-                });
-            });
+        this.props.getHotelList()
+        this.props.getHotelLocation();
     }
 
-    hotelClicked (index, HotelID) {
+    hotelClicked (index, HotelID, HotelName) {
         this.props.history.push({
             pathname: '/foodInRest',
-            search: 'uuid=' + HotelID,
-        });
-        // <NavLink exact to={'/home'} ></NavLink>;
-    }
-
-    hotelDisplay (hotelData, index) {
-        return (
-            <HotelDisplayBox
-                hotel={hotelData}
-                index={index}
-                onClick={()=>this.hotelClicked(index, hotelData.id)}
-            />
-        );
-    }
-
-    hotelFilterDisplay (hotelData, index) {
-        return (
-            <FilterCheckBox
-                hotel={hotelData}
-                index={index}
-                // onClick={()=>this.hotelClicked(index, hotelData.id)}
-            />
-        );
-    }
-
-    handleLocationFilter () {
-        let {locationFilter} = this.state;
-        this.setState({
-            locationFilter: !locationFilter,
+            search: 'uuid=' + HotelID ,
+            id: HotelID,
+            restaurant: HotelName
         });
     }
 
-    handleTypeFilter () {
-        console.log("Filter with type");
-    }
-
-    handleChange (name) {
-        this.setState({
-            data: true,
-        });
-    }
-
-    handleSubmit (name) {
-        let hotelLocationSelected = name;
-        let oldHotelData = [ ...this.state.hotelDataFromApi ];
-        let newHotelData = [];
-
+    handleSubmit =  (hotelLocationSelected) => {
         if (hotelLocationSelected.length) {
-            oldHotelData.map(hotelData => {
-                if (hotelLocationSelected.indexOf(hotelData.location) > -1) {
-                    newHotelData.push(hotelData);
-                }
-            });
-            this.setState({
-                message: newHotelData,
-            });
+            let hotelList = this.props.allHotelList.filter(oldHotelValue => hotelLocationSelected.indexOf(oldHotelValue.location) > -1);
+            this.props.getFilterHotelList(hotelList);
+        } else {
+            this.props.getHotelList()
         }
     }
 
-    filterCheckBox (hotel) {
-        let locationArray = [];
-        let uniqueLocationArray = [];
+    filterCheckBox (locationFilter) {
+            let uniqueLocationArray = [ ...new Set(this.props.hotelLocation) ];
+            return (
+                <FilterMenu
+                    uniqueLocationArray={uniqueLocationArray}
+                    onSubmit = {(name)=>this.handleSubmit(name)}
+                    locationFilter = {locationFilter}
+                />
+            );
+    }
+
+    filterComponent () {
         let {locationFilter} = this.state;
-        if (hotel) {
-            hotel && hotel.map((hotelData)=>{
-                locationArray.push(hotelData.location);
-            });
-            uniqueLocationArray = [ ...new Set(locationArray) ];
-        }
-        return (
-            <FilterMenu
-                uniqueLocationArray={uniqueLocationArray}
-                locationFilter={locationFilter}
-                onSubmit = {(name)=>this.handleSubmit(name)}
-            />
+        return(
+            <aside>
+                <h4>Filter based on:</h4>
+                < label className = " arrow dropdown-display-flex cursor-css" onClick = { () => this.setState({ locationFilter:!locationFilter}) } > location <img className = 'downArrow' src={downArrow} /></label>
+                {this.props.hotelLocation && this.filterCheckBox(locationFilter)}
+            </aside>
         );
     }
 
-    handleSearchBar (event) {
-        searchText = event.target.value;
-    }
+    handleSearchBar = event => searchText = event.target.value;
 
-    handleSearch () {
-        // const {message} = this.state;
-        if (searchText === '' || searchText.trim() === '') {
-            console.log("Error in serach bar");
-        } else {
-            axios.get('http://localhost:8080/searchHotelByName?name=' + searchText, { mode: 'no-cors'})
-                .then(fetchedData => {
-                    let hotelData = fetchedData.data;
-                    this.setState({
-                        message: hotelData,
-                    });
-                });
-        }
-    }
+    handleSearch = () => searchText && (searchText !== '' && searchText.trim() !== '') ? this.props.getSearchHotelList(searchText) : null;
+
 
     render () {
-        const { message, hotelDataFromApi } = this.state;
-        let restaurantLength = 0;
-
-        if (message) {
-            restaurantLength = message.length;
-        }
+        let {hotelList} = this.props;
+        
         return (
             <div className="container-fluid add-in-container-fluid">
                 <SearchBar
                     onType={(event)=>this.handleSearchBar(event)}
                     onClick = {()=>this.handleSearch()}
                 />
-                <h3>{restaurantLength} Restaurant :</h3>
+
+                <h3>{hotelList.length} Restaurant :</h3>
 
                 <div className="row" id="main">
                     <div className="col-md-10 list-background-color">
-                        {
-                            message && message.map((hotelData, index)=> {
-                                return this.hotelDisplay(hotelData, index);
-                            })
-                        }
+                        {hotelList && hotelList.map((hotelData, index)=> this.hotelDisplay(hotelData, index))}
                     </div>
-                    <div className="col-md-2">
-                        <aside>
-                            Filter based on:
-                            < label className = "dropdown-display-flex cursor-css"
-                            onClick = {
-                                () => this.handleLocationFilter()
-                            } >
-                            location
-                            </label>
-                            {hotelDataFromApi && this.filterCheckBox(hotelDataFromApi)}
-                            < label className = "dropdown-display-flex cursor-css"
-                            onClick = {
-                                () => this.handleTypeFilter()
-                            } >
-                            type
-                            </label>
-                        </aside>
+                    <div className="col-md-2" style={{backgroundColor:'darkgrey',borderRadius:'4px'}}>
+                        { this.filterComponent()}
                     </div>
                 </div>
             </div>
         );
     }
+
+    hotelDisplay (hotelData, index) {
+        return (
+            <HotelDisplayBox
+                key={index}
+                hotel={hotelData}
+                index={index}
+                ImageFileConstant={imageConstantFile}
+                box='box'
+                hover= {true}
+                ImageWidthHeight='image-widht-height'
+                onClick={()=>this.hotelClicked(index, hotelData.id, hotelData.name)}
+            />
+        );
+    }
 }
 
 
-export default (HotelList);
+export default connect(mapStateToProps, mapDispatchToProps)(HotelList);

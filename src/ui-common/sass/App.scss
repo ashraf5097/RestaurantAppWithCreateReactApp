@@ -48,17 +48,17 @@ $duration: 2000;
   @return $randomNum;
 }
 
-.confetti {
+.confetti-div {
   display: flex;
   justify-content: center;
   align-items: center;
-  // position: relative;
+  position: relative;
   width: 100%;
-  // height: 600px;
+  height: 100%;
   overflow: hidden;
 }
 
-.confetti-piece {
+.confetti-design {
   position: absolute;
   width: 8px;
   height: 16px;
@@ -71,7 +71,7 @@ $duration: 2000;
     &:nth-child(#{$i}) {
       left: $i * 7%;
       transform: rotate(#{randomNum(-80, 80)}deg);
-      animation: makeItRain $duration * 6ms infinite ease-out;
+      animation: flowFromTopToBottom $duration * 6ms infinite ease-out;
       animation-delay: #{randomNum(0, $duration * .5)}ms;
       animation-duration: #{randomNum($duration * .7, $duration * 8)}ms
     }
@@ -80,7 +80,6 @@ $duration: 2000;
   &:nth-child(odd) {
     background: $blue;
     animation-duration: $duration * 4ms;
-
   }
   
   &:nth-child(even) {
@@ -107,12 +106,11 @@ $duration: 2000;
   }
 }
 
-@keyframes makeItRain {
+@keyframes flowFromTopToBottom {
+
   from {
-    opacity: 1;
+    bottom: 0%;
   }
-  
-  
 
   to {
     top: 100%;

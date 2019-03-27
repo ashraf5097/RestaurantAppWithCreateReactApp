@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 // Import bootstrap css
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Bottom from '../Bottom';
+// import Bottom from '../Bottom';
 import axios from 'axios';
 // import hotelData from '../newFoodInRestData';
 import FoodDisplayBox from './FoodDisplayBox';
+import Button from '../Common/Button';
 
 
 class FoodInRest extends Component {
 
 
         state = {
-            message: undefined,
+            message: [],
         };
 
     // displayHotelFoodList
@@ -20,11 +21,26 @@ class FoodInRest extends Component {
             .then(fetchedData => {
                 let foodData = fetchedData.data;
                 this.setState({message: foodData });
-            });
+            })
+            .catch(()=> {
+                
+                this.setState({
+                    message: [],
+
+                })
+            })
     }
 
     hotelClicked (index) {
-        console.log("In rest List");
+    }
+
+    handleAddFoodButton (index, HotelID, HotelName) {
+        this.props.history.push({
+            pathname: '/addFood',
+            search:  this.props.location.search,
+            restaurant: this.props.location.restaurant,
+            restaurantId: this.props.location.id
+        });
     }
 
     hotelDisplay (hotelFoodData, index) {
@@ -38,25 +54,39 @@ class FoodInRest extends Component {
     }
 
     render () {
+        
         const { message } = this.state;
-        return (
-            <div className="container-fluid add-in-container-fluid">
-                <div className="row">
-                    <div className="col-md-10">
+        if (message.length) {
+            return (
+            <span>
+                
+                <div className="container-fluid add-in-container-fluid">
+                        <Button
+                            text="Add Food"
+                            id="add"
+                            type="button"
+                            class="btn btn-primary floatRight "
+                            handleOnClick={()=>this.handleAddFoodButton()}
+                        />
+                    <div>
                         {
                             message && message.map((hotelData, index)=> {
                                 return this.hotelDisplay(hotelData, index);
                             })
                         }
                     </div>
-                    <div className="col-md-2">
-                        <aside>
-                            something
-                        </aside>
-                    </div>
+                            
                 </div>
-            </div>
-        );
+                </span>
+            );
+        } else {
+            return (
+                <div className="container-fluid add-in-container-fluid">
+                    No data available for this restaurant  :(
+                </div>
+            )
+        }
+        
     }
 }
 

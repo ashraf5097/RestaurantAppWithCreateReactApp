@@ -11,7 +11,7 @@ class MenuBar extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            message: '',
+            adminDomain: '',
         };
     }
 
@@ -23,7 +23,18 @@ class MenuBar extends Component {
             });
     }
 
+    componentDidUpdate (props) {
+        let adminDomain = props.history.location.state;
+        if (adminDomain ==='admin' && adminDomain !== this.state.adminDomain) {
+            this.setState({
+                adminDomain: adminDomain
+            });
+        }
+    }
+
     MenuBar () {
+        let {adminDomain} = this.state;
+
         return (
             <div className="bg-color ">
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -48,7 +59,8 @@ class MenuBar extends Component {
                                     }}
                                     exact to={'/hotel'} >Restaurant</NavLink>
                             </li>
-                            <li className="nav-item">
+                            {adminDomain && (
+                                <li className="nav-item">
                                 <NavLink className="menubar"
                                     activeStyle={{
                                         fontWeight: "bold",
@@ -56,6 +68,8 @@ class MenuBar extends Component {
                                     }}
                                     exact to={'/addRestaurant'} >Add Restaurant</NavLink>
                             </li>
+                            )}
+                        {adminDomain && (
                             <li className="nav-item">
                                 <NavLink className="menubar"
                                     activeStyle={{
@@ -64,6 +78,7 @@ class MenuBar extends Component {
                                     }}
                                     exact to={'/addFood'} >Add Food</NavLink>
                             </li>
+                                                        )}
                         </ul>
                         <ul className="login">
                             <li className="nav-item ">
