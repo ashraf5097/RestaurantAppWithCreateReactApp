@@ -185,6 +185,8 @@ border-color: darkgrey;
     border: 1px solid #eee;
     box-shadow: 0 2px 2px #ccc;
     width: 78%;
+    height: 182px;
+    overflow-y: auto;
     padding-left: 7%;
     padding-bottom: 4%;
     padding-top: 4%;
@@ -193,6 +195,8 @@ border-color: darkgrey;
 .list-background-color{
     background-color: darkslategrey;
     border-radius: 4px;
+    overflow-y: auto;
+    height: 800px;
 }
 
 #custom-search-input{
@@ -284,4 +288,9 @@ border-color: darkgrey;
 
   .floatRight{
       float: right;
+  }
+
+  .addScrollBar{
+    overflow-y: auto;
+    height: 800px;
   }

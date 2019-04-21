@@ -4,7 +4,6 @@ import {connect} from 'react-redux';
 import NumberTextBox from '../Common/NumberTextBox';
 import Button from '../Common/Button';
 import HotelDisplayBox from '../Restaurant/HotelDisplayBox';
-import axios from 'axios';
 import {imageConstantFile} from '../../ui-common/imageConstantFile';
 import * as actions from '../../store/action/actionCreator';
 
@@ -32,7 +31,8 @@ class AddRestaurant extends Component {
             restaurantList: [],
             index: -1,
             fileName:'',
-            files:'',
+            fileType: '',
+            newFile: null,
             isSaved: false
         };
         this.handleChange = this.handleChange.bind(this);
@@ -55,14 +55,8 @@ class AddRestaurant extends Component {
         }
     }
 
-    handleOnSubmit () {
-        const {restaurantList} = this.state;
-        if (restaurantList.length) {
-            this.props.addRestaurantList(restaurantList)
-        }
-    }
 
-    handleChange (event) {
+    handleChange = (event) => {
         if (event.target.id === 'usr') {
             this.setState({restName: event.target.value});
         }
@@ -86,15 +80,27 @@ class AddRestaurant extends Component {
         }
     }
 
+
+    handleOnSubmit () {
+        let {restaurantList} = this.state;
+        if (restaurantList.length) {
+            this.props.addRestaurantList(this.state.file)
+        }
+    }
+
     handleOnAdd () {
-        const {restName, restLocation, restContact, restaurantList, index} = this.state;
+        const {restName, restLocation, restContact, restaurantList, index, file, fileType} = this.state;
         if (index !== -1) {
             this.handleOnDelete(index);
         }
+        
+        
         let restBox = {
             name: restName,
             location: restLocation,
             contact: restContact,
+            // uploadedImageName: formData,
+            uploadedImageType: fileType,
         };
 
         let newRestBox = [ ...restaurantList, ...[ restBox ] ];
@@ -165,28 +171,21 @@ class AddRestaurant extends Component {
         );
     }
 
-//     handleUploadImage = (event) => {
-//         let files = event.target.files[0];
-//             const formData = new FormData()
+    handleUploadImage = (event) => {
+        event.preventDefault();
 
-//         //     files[0].forEach((file, i) => {
-//         //         formData.append(i, file)
-//         //       })
+        this.setState({
+            file: event.target.files[0],
+            fileType: event.target.files[0].type
+        });
+    }
 
-
-//         // if(files.length){
-//         //     let filename = files[0].name;
-            
-//         //     this.setState({
-//         //         fileName : filename,
-//         //         files
-//         //     });
-//         // }
-//     }
 
     render () {
-        
+
         const {restaurantList} = this.state;
+        console.log(restaurantList);
+
         return (
             <div className="form-group container-fluid add-in-container-fluid">
                 <div className="row">
@@ -198,7 +197,7 @@ class AddRestaurant extends Component {
                                 id="usr"
                                 name="restaurantName"
                                 value={this.state.restName}
-                                handleChange={this.handleChange}
+                                handleChange={(event) => this.handleChange(event)}
                             />
                             <TextBox
                                 label="Location"
@@ -206,7 +205,7 @@ class AddRestaurant extends Component {
                                 id="loc"
                                 name="location"
                                 value={this.state.restLocation}
-                                handleChange={this.handleChange}
+                                handleChange={(event) => this.handleChange(event)}
                             />
                         </div>
                         <div >
@@ -253,6 +252,13 @@ class AddRestaurant extends Component {
                                 handleOnClick={()=>this.handleOnSubmit()}
                             />
                         </div>
+                        {/* <div>
+                            <form onSubmit={this.handleUploadImagea}>
+                                <h1>File Upload</h1>
+                                <input type="file" name="myImage" onChange= {this.onChange} />
+                                <button type="submit">Upload</button>
+                            </form>
+                        </div> */}
                     </div>
                     <div className = "col-md-8">
                         <div>

@@ -17,13 +17,12 @@ class FoodInRest extends Component {
 
     // displayHotelFoodList
     componentDidMount () {
-        axios.get('http://localhost:8080/displayHotelFoodList' + this.props.location.search, { mode: 'no-cors'})
+        axios.get('http://localhost:3010/displayHotelFoodList?' +'hotelId='+ this.props.location.hotelId, { mode: 'no-cors'})
             .then(fetchedData => {
                 let foodData = fetchedData.data;
                 this.setState({message: foodData });
             })
             .catch(()=> {
-                
                 this.setState({
                     message: [],
 
@@ -39,7 +38,7 @@ class FoodInRest extends Component {
             pathname: '/addFood',
             search:  this.props.location.search,
             restaurant: this.props.location.restaurant,
-            restaurantId: this.props.location.id
+            id: this.props.location.hotelId
         });
     }
 
@@ -54,7 +53,7 @@ class FoodInRest extends Component {
     }
 
     render () {
-        
+
         const { message } = this.state;
         if (message.length) {
             return (

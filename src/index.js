@@ -25,7 +25,7 @@ ReactDOM.render(
     <Provider store={ourStore}>
         <div>
         {/* <MenuBar /> */}
-            <Router>
+            <Router >
                 <App />
             </Router>
         </div>

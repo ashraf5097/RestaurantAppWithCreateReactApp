@@ -24,7 +24,7 @@ class App extends React.Component {
                 <Route exact path="/" component={Login} />
                 <Route path="/login" component={Login} />
                 <Route path="/hotel" component={HotelList} />
-                <Route path="/foodInRest" component={FoodInRest} />
+                <Route path="/foodInRest?hotelId=" component={FoodInRest} />
                 <Route path="/addFood" component={AddFood} />
                 <Route path="/addRestaurant" component={AddRestaurant} />
                 {/* </Switch> */}

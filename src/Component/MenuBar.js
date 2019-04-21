@@ -16,7 +16,7 @@ class MenuBar extends Component {
     }
 
     componentDidMount () {
-        axios.get('http://localhost:8080/displayHotelList', { mode: 'no-cors'})
+        axios.get('http://localhost:3010/displayHotelList', { mode: 'no-cors'})
             .then(fetchedData => {
                 let hotelListName = fetchedData.data;
                 this.setState({message: hotelListName[0].name});

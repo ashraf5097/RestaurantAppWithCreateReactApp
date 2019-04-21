@@ -33,18 +33,29 @@ const mapDispatchToProps = dispatch => {
 
 class HotelList extends Component {
 
-    state = { locationFilter: false};
+    state = { locationFilter: false , };
 
-    componentDidMount () {
-        this.props.getHotelList()
+    componentDidMount() {
         this.props.getHotelLocation();
-    }
+        this.props.getHotelList();
+      }
+
+      paneDidMount = (node) => {
+        if (node) {
+          node.addEventListener('scroll', () => {
+            if (node.scrollHeight - node.scrollTop <= 800) {
+                this.props.getHotelList();
+            }
+          });
+
+        }
+      };
 
     hotelClicked (index, HotelID, HotelName) {
+        // window.location.href = '/foodInRest?hotelId=' + HotelID
         this.props.history.push({
-            pathname: '/foodInRest',
-            search: 'uuid=' + HotelID ,
-            id: HotelID,
+            pathname: '/foodInRest?hotelId=',
+            hotelId: HotelID,
             restaurant: HotelName
         });
     }
@@ -59,7 +70,9 @@ class HotelList extends Component {
     }
 
     filterCheckBox (locationFilter) {
-            let uniqueLocationArray = [ ...new Set(this.props.hotelLocation) ];
+            let hotelLocation = this.props.hotelLocation.map((locationObject)=>locationObject.location)
+            let uniqueLocationArray = [ ...new Set(hotelLocation) ];
+
             return (
                 <FilterMenu
                     uniqueLocationArray={uniqueLocationArray}
@@ -87,9 +100,9 @@ class HotelList extends Component {
 
     render () {
         let {hotelList} = this.props;
-        
+
         return (
-            <div className="container-fluid add-in-container-fluid">
+            <div className="container-fluid add-in-container-fluid" id="container">
                 <SearchBar
                     onType={(event)=>this.handleSearchBar(event)}
                     onClick = {()=>this.handleSearch()}
@@ -98,18 +111,21 @@ class HotelList extends Component {
                 <h3>{hotelList.length} Restaurant :</h3>
 
                 <div className="row" id="main">
-                    <div className="col-md-10 list-background-color">
+                    <div className="col-md-10 list-background-color" id="list-container" ref={this.paneDidMount}>
                         {hotelList && hotelList.map((hotelData, index)=> this.hotelDisplay(hotelData, index))}
                     </div>
                     <div className="col-md-2" style={{backgroundColor:'darkgrey',borderRadius:'4px'}}>
                         { this.filterComponent()}
                     </div>
+
+                    
                 </div>
             </div>
         );
     }
 
     hotelDisplay (hotelData, index) {
+
         return (
             <HotelDisplayBox
                 key={index}
@@ -119,7 +135,7 @@ class HotelList extends Component {
                 box='box'
                 hover= {true}
                 ImageWidthHeight='image-widht-height'
-                onClick={()=>this.hotelClicked(index, hotelData.id, hotelData.name)}
+                onClick={()=>this.hotelClicked(index, hotelData._id, hotelData.name)}
             />
         );
     }

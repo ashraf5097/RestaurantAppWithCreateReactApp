@@ -5,6 +5,21 @@ import axios from 'axios';
 import FoodDisplayBox from './FoodDisplayBox';
 import HotelDisplayBox from '../Restaurant/HotelDisplayBox';
 import {imageConstantFile} from '../../ui-common/imageConstantFile';
+import * as actions from '../../store/action/actionCreator';
+import {connect} from 'react-redux';
+
+const mapStateToProps = state =>{
+    return {
+        isSaved: state.isSaved,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+   return{
+    addFoodList : (foodList,id) => dispatch(actions.addFoodList(foodList,id)),
+    resetIsSaved : (isSavedValue) => dispatch(actions.savedSuccessFully(isSavedValue))
+   }
+}
 
 class AddFood extends Component {
     constructor (props) {
@@ -17,19 +32,20 @@ class AddFood extends Component {
             foodList: [],
             index: -1,
         };
-        this.handleChange = this.handleChange.bind(this);
+        // this.handleChange = this.handleChange.bind(this);
     }
 
     // displayHotelFoodList
     componentDidMount () {
-        axios.get('http://localhost:8080/displayHotelListWithoutFood', { mode: 'no-cors'})
+
+        axios.get('http://localhost:3010/displayHotelListWithoutFood', { mode: 'no-cors'})
             .then(fetchedData => {
                 let hotelData = fetchedData.data;
                 this.setState({restaurantList: hotelData });
             });
     }
 
-    handleChange (event) {
+    handleChange = (event) => {
         if (event.target.id === 'food') {
             this.setState({
                 foodname: event.target.value,
@@ -56,6 +72,7 @@ class AddFood extends Component {
             foodname: foodname,
             type: type,
             price: price,
+            hotelId: this.props.location.id
         };
 
         let newfoodBox = [ ...foodList, ...[ foodBox ] ];
@@ -95,7 +112,7 @@ class AddFood extends Component {
     hotelClicked (index, HotelID) {
         this.props.history.push({
             pathname: '/addFood',
-            search: 'uuid=' + HotelID,
+            query: HotelID,
             id: HotelID,
         });
     }
@@ -109,7 +126,7 @@ class AddFood extends Component {
                     ImageFileConstant={imageConstantFile}
                     ImageWidthHeight='image-widht-height-for-addRestaurant'
                     box='box-for-addRestaurant'
-                    onClick={()=>this.hotelClicked(index, hotelData.id)}
+                    onClick={()=>this.hotelClicked(index, hotelData._id)}
                 />
             </div>
         );
@@ -144,11 +161,28 @@ class AddFood extends Component {
         );
     }
 
+    handleOnSubmit () {
+        const {foodList} = this.state;
+
+        if (foodList.length) {
+            this.props.addFoodList(foodList, this.props.location.id)
+        }
+    }
+
+    showRestaurantName = () => {
+        if(this.state.restaurantList.length){
+            let restaurantName = this.state.restaurantList && this.state.restaurantList.filter((restaurant) => restaurant._id === this.props.location.id);
+            console.log("restaurantName = ",restaurantName,this.props.location.id);
+            return (<h3>Update {restaurantName[0].name}'s Food : </h3>)
+        }
+    }
+
     render () {
-        
         const {restaurantList,foodList} = this.state;
+ 
         return (
             <div className="form-group container-fluid add-in-container-fluid">
+                {this.props.location.id ? this.showRestaurantName():<h3>Select Restaurant to add food</h3>}
                 <div className="row">
                     <div className="col-md-3">
                         <div>
@@ -158,7 +192,7 @@ class AddFood extends Component {
                                 id="food"
                                 name="foodname"
                                 value={this.state.foodname}
-                                handleChange={this.handleChange}
+                                handleChange={(event) => this.handleChange(event)}
                             />
                         </div>
                         <div >
@@ -168,7 +202,7 @@ class AddFood extends Component {
                                 id="type"
                                 name="type"
                                 value={this.state.type}
-                                handleChange={this.handleChange}
+                                handleChange={(event) => this.handleChange(event)}
                             />
                         </div>
                         <div >
@@ -178,7 +212,7 @@ class AddFood extends Component {
                                 id="price"
                                 name="price"
                                 value={this.state.price}
-                                handleChange={this.handleChange}
+                                handleChange={(event) => this.handleChange(event)}
                             />
                         </div>
                         <div className="button-space">
@@ -197,26 +231,33 @@ class AddFood extends Component {
                                 handleOnClick={()=>this.handleOnAdd()}
                             />
                         </div>
+                        <div className="submit-btn-in-AddRest">
+                            <Button
+                                text="Submit"
+                                id="add"
+                                type="button"
+                                class="btn btn-primary"
+                                handleOnClick={()=>this.handleOnSubmit()}
+                            />
+                        </div>
                     </div>
                     <div className = "col-md-4">
                         <div>
                             List of food :
                         </div>
-                        {
-                            foodList && foodList.map((hotelData, index)=> {
-                                return this.foodDisplay(hotelData, index);
-                            })
-                        }
+                        <div className='addScrollBar'>
+                        { foodList && foodList.map((hotelData, index)=> this.foodDisplay(hotelData, index))}
+                        </div>
                     </div>
                     <div className = "col-md-4">
-                        <div>
                             List of Restaurant with no food :
-                        </div>
+                        <div className='addScrollBar'>
                         {
                             restaurantList && restaurantList.map((hotelData, index)=> {
                                 return this.hotelDisplay(hotelData, index);
                             })
                         }
+                        </div>
                     </div>
                 </div>
             </div>
@@ -224,4 +265,4 @@ class AddFood extends Component {
     }
 }
 
-export default AddFood;
+export default connect(mapStateToProps, mapDispatchToProps)(AddFood);
