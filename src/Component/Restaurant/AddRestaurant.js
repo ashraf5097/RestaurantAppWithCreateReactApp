@@ -84,17 +84,14 @@ class AddRestaurant extends Component {
     handleOnSubmit () {
         let {restaurantList} = this.state;
         if (restaurantList.length) {
-            this.props.addRestaurantList(this.state.file)
+            this.props.addRestaurantList(restaurantList)
         }
     }
 
     handleOnAdd () {
         const {restName, restLocation, restContact, restaurantList, index, file, fileType} = this.state;
-        if (index !== -1) {
-            this.handleOnDelete(index);
-        }
-        
-        
+        if (index !== -1) this.handleOnDelete(index);
+
         let restBox = {
             name: restName,
             location: restLocation,
@@ -184,7 +181,7 @@ class AddRestaurant extends Component {
     render () {
 
         const {restaurantList} = this.state;
-        console.log(restaurantList);
+        console.log(this.props);
 
         return (
             <div className="form-group container-fluid add-in-container-fluid">

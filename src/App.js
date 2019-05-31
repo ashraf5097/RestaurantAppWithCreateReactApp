@@ -14,20 +14,16 @@ import Footer from '../src/Component/Bottom';
 
 class App extends React.Component {
     render () {
-        
         return (
             <div className="whole-page-background-color">
-                {/* <MenuBar /> */}
-                {/* <Switch> */}
                 <Route path="/" component={MenuBar} />
                 <Route path="/home" component={Home} />
                 <Route exact path="/" component={Login} />
                 <Route path="/login" component={Login} />
                 <Route path="/hotel" component={HotelList} />
-                <Route path="/foodInRest?hotelId=" component={FoodInRest} />
+                <Route path="/foodInRest" component={FoodInRest} />
                 <Route path="/addFood" component={AddFood} />
                 <Route path="/addRestaurant" component={AddRestaurant} />
-                {/* </Switch> */}
                 <Footer />
             </div>
         );

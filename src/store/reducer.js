@@ -4,6 +4,7 @@ const initialState = {
     hotelLocation : [],
     allHotelList: [],
     isSaved: false,
+    restaurantIdSelectedForFood:''
 }
 
 const reducer = ( state = initialState, action ) => {
@@ -20,6 +21,10 @@ const reducer = ( state = initialState, action ) => {
 
         case 'SAVED_HOTEL' :
         return {...state, isSaved:action.payload}
+
+        case 'SAVED_REST_ID' :
+        return {...state, restaurantIdSelectedForFood: action.payload}
+
         default: return state;
     }
 }

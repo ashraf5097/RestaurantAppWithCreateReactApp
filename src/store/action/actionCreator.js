@@ -49,15 +49,15 @@ export const  fetchHotelLoction = () => {
 
 // Post Data
 export const addRestaurantList = (restaurantList) => {
-    console.log("list rest  = ", restaurantList);
-    let formData = new FormData();
-    formData = {productImage: restaurantList}
+    // let formData = new FormData();
+    // formData = {productImage: restaurantList}
+console.log("restaurantList = ", restaurantList);
 
     return dispatch =>  {
-        axios.post('http://localhost:3010/addHotel', formData,{mode: 'no-cors'}
+        axios.post('http://localhost:3010/addHotel', restaurantList,{mode: 'no-cors'}
         )
-        .then(() => {
-            console.log("Saved Successfully");
+        .then((res) => {
+            console.log("Saved Successfully", res);
             dispatch(savedSuccessFully(true))
         })
     }
@@ -74,9 +74,17 @@ export const addFoodList = (foodList,id) => {
         })
     }
 }
+
 export const savedSuccessFully = (isSaved) => {
     return {
         type: 'SAVED_HOTEL',
         payload: isSaved
+    }
+}
+
+export const storeRestaurantId = (id) => {
+    return {
+        type: 'SAVED_REST_ID',
+        payload: id
     }
 }

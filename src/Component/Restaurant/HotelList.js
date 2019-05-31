@@ -27,7 +27,8 @@ const mapDispatchToProps = dispatch => {
        getHotelList: () => dispatch(actions.fetchHotelList()),
        getSearchHotelList: (searchText) => dispatch(actions.fetchSearchHotelList(searchText)),
        getFilterHotelList: (searchText) => dispatch(actions.fetchedHotelSearched(searchText)),
-       getHotelLocation: () => dispatch(actions.fetchHotelLoction())
+       getHotelLocation: () => dispatch(actions.fetchHotelLoction()),
+       storeRestaurantClicked: (restId) => dispatch(actions.storeRestaurantId(restId)),
    }
 }
 
@@ -52,9 +53,9 @@ class HotelList extends Component {
       };
 
     hotelClicked (index, HotelID, HotelName) {
-        // window.location.href = '/foodInRest?hotelId=' + HotelID
+        this.props.storeRestaurantClicked(HotelID);
         this.props.history.push({
-            pathname: '/foodInRest?hotelId=',
+            pathname: '/foodInRest',
             hotelId: HotelID,
             restaurant: HotelName
         });
@@ -93,6 +94,21 @@ class HotelList extends Component {
         );
     }
 
+    hotelDisplay (hotelData, index) {
+        return (
+            <HotelDisplayBox
+                key={index}
+                hotel={hotelData}
+                index={index}
+                ImageFileConstant={imageConstantFile}
+                box='box'
+                hover= {true}
+                ImageWidthHeight='image-widht-height'
+                onClick={()=>this.hotelClicked(index, hotelData._id, hotelData.name)}
+            />
+        );
+    }
+
     handleSearchBar = event => searchText = event.target.value;
 
     handleSearch = () => searchText && (searchText !== '' && searchText.trim() !== '') ? this.props.getSearchHotelList(searchText) : null;
@@ -117,26 +133,8 @@ class HotelList extends Component {
                     <div className="col-md-2" style={{backgroundColor:'darkgrey',borderRadius:'4px'}}>
                         { this.filterComponent()}
                     </div>
-
-                    
                 </div>
             </div>
-        );
-    }
-
-    hotelDisplay (hotelData, index) {
-
-        return (
-            <HotelDisplayBox
-                key={index}
-                hotel={hotelData}
-                index={index}
-                ImageFileConstant={imageConstantFile}
-                box='box'
-                hover= {true}
-                ImageWidthHeight='image-widht-height'
-                onClick={()=>this.hotelClicked(index, hotelData._id, hotelData.name)}
-            />
         );
     }
 }

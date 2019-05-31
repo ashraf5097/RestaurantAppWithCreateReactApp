@@ -6,31 +6,36 @@ import axios from 'axios';
 // import hotelData from '../newFoodInRestData';
 import FoodDisplayBox from './FoodDisplayBox';
 import Button from '../Common/Button';
+import {connect} from 'react-redux';
 
-
+const mapStateToProps = state =>{
+    return {
+        restaurantIdSelectedForFood : state.restaurantIdSelectedForFood
+    }
+}
 class FoodInRest extends Component {
 
 
         state = {
-            message: [],
+            foodList: [],
         };
 
     // displayHotelFoodList
     componentDidMount () {
-        axios.get('http://localhost:3010/displayHotelFoodList?' +'hotelId='+ this.props.location.hotelId, { mode: 'no-cors'})
+        axios.get('http://localhost:3010/displayHotelFoodList?' +'hotelId='+ this.props.restaurantIdSelectedForFood, { mode: 'no-cors'})
             .then(fetchedData => {
                 let foodData = fetchedData.data;
-                this.setState({message: foodData });
+                this.setState({foodList: foodData });
             })
             .catch(()=> {
                 this.setState({
-                    message: [],
+                    foodList: [],
 
                 })
             })
     }
 
-    hotelClicked (index) {
+    foodClicked (index) {
     }
 
     handleAddFoodButton (index, HotelID, HotelName) {
@@ -47,18 +52,18 @@ class FoodInRest extends Component {
             <FoodDisplayBox
                 food={hotelFoodData}
                 index={index}
-                onClick={()=>this.hotelClicked(index)}
+                onClick={()=>this.foodClicked(index)}
             />
         );
     }
 
     render () {
-
-        const { message } = this.state;
-        if (message.length) {
+        console.log("this.props = ", this.props);
+        
+        const { foodList } = this.state;
+        if (foodList.length) {
             return (
             <span>
-                
                 <div className="container-fluid add-in-container-fluid">
                         <Button
                             text="Add Food"
@@ -69,7 +74,7 @@ class FoodInRest extends Component {
                         />
                     <div>
                         {
-                            message && message.map((hotelData, index)=> {
+                            foodList && foodList.map((hotelData, index)=> {
                                 return this.hotelDisplay(hotelData, index);
                             })
                         }
@@ -89,7 +94,6 @@ class FoodInRest extends Component {
     }
 }
 
-
-export default FoodInRest;
+export default connect(mapStateToProps, {})(FoodInRest);
 
 

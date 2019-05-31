@@ -30,18 +30,21 @@ class AddFood extends Component {
             price: '',
             restaurantList: [],
             foodList: [],
+            restaurantId:'',
+            restaurantName:'',
             index: -1,
         };
-        // this.handleChange = this.handleChange.bind(this);
     }
 
     // displayHotelFoodList
     componentDidMount () {
-
+        this.setState({
+            restaurantName: this.props.location.restaurant,
+            restaurantId: this.props.location.id
+        })
         axios.get('http://localhost:3010/displayHotelListWithoutFood', { mode: 'no-cors'})
             .then(fetchedData => {
-                let hotelData = fetchedData.data;
-                this.setState({restaurantList: hotelData });
+                this.setState({restaurantList: fetchedData.data });
             });
     }
 
@@ -72,7 +75,7 @@ class AddFood extends Component {
             foodname: foodname,
             type: type,
             price: price,
-            hotelId: this.props.location.id
+            hotelId: this.state.restaurantId
         };
 
         let newfoodBox = [ ...foodList, ...[ foodBox ] ];
@@ -109,12 +112,12 @@ class AddFood extends Component {
         });
     }
 
-    hotelClicked (index, HotelID) {
-        this.props.history.push({
-            pathname: '/addFood',
-            query: HotelID,
-            id: HotelID,
-        });
+    hotelClicked (index, HotelName,HotelID) {
+        console.log("HotelID = ", HotelID)
+        this.setState({
+            restaurantId: HotelID,
+            restaurantName: HotelName
+        })
     }
 
     hotelDisplay (hotelData, index) {
@@ -126,7 +129,7 @@ class AddFood extends Component {
                     ImageFileConstant={imageConstantFile}
                     ImageWidthHeight='image-widht-height-for-addRestaurant'
                     box='box-for-addRestaurant'
-                    onClick={()=>this.hotelClicked(index, hotelData._id)}
+                    onClick={()=>this.hotelClicked(index, hotelData.name,hotelData._id)}
                 />
             </div>
         );
@@ -162,27 +165,17 @@ class AddFood extends Component {
     }
 
     handleOnSubmit () {
-        const {foodList} = this.state;
-
-        if (foodList.length) {
-            this.props.addFoodList(foodList, this.props.location.id)
-        }
-    }
-
-    showRestaurantName = () => {
-        if(this.state.restaurantList.length){
-            let restaurantName = this.state.restaurantList && this.state.restaurantList.filter((restaurant) => restaurant._id === this.props.location.id);
-            console.log("restaurantName = ",restaurantName,this.props.location.id);
-            return (<h3>Update {restaurantName[0].name}'s Food : </h3>)
+        if (this.state.foodList.length) {
+            this.props.addFoodList(this.state.foodList, this.state.restaurantId)
         }
     }
 
     render () {
-        const {restaurantList,foodList} = this.state;
+        const {restaurantList,foodList,restaurantName} = this.state;
  
         return (
             <div className="form-group container-fluid add-in-container-fluid">
-                {this.props.location.id ? this.showRestaurantName():<h3>Select Restaurant to add food</h3>}
+                {restaurantName ? <h3>Update {restaurantName}'s Food : </h3>:<h3>Select Restaurant to add food</h3>}
                 <div className="row">
                     <div className="col-md-3">
                         <div>
@@ -250,13 +243,9 @@ class AddFood extends Component {
                         </div>
                     </div>
                     <div className = "col-md-4">
-                            List of Restaurant with no food :
+                        List of Restaurant with no food :
                         <div className='addScrollBar'>
-                        {
-                            restaurantList && restaurantList.map((hotelData, index)=> {
-                                return this.hotelDisplay(hotelData, index);
-                            })
-                        }
+                        { restaurantList && restaurantList.map((hotelData, index)=>  this.hotelDisplay(hotelData, index))}
                         </div>
                     </div>
                 </div>
